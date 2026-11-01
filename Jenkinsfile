@@ -23,6 +23,16 @@ pipeline {
             }
         }
 
+        stage('Karate API Testing') {
+            steps {
+                bat '''
+                set "JAVA_HOME=C:\\Program Files\\Eclipse Adoptium\\jdk-21.0.12.101-hotspot"
+                set "PATH=%JAVA_HOME%\\bin;C:\\apache-maven\\apache-maven-3.10.0\\bin;%PATH%"
+                mvn test
+                '''
+            }
+        }
+
         stage('Build Docker Image') {
             steps {
                 bat 'docker build -t student-management:1.0 .'
@@ -32,11 +42,11 @@ pipeline {
 
     post {
         success {
-            echo 'Student Management pipeline completed successfully!'
+            echo 'All stages completed successfully!'
         }
 
         failure {
-            echo 'Pipeline failed. Check the console output.'
+            echo 'Pipeline failed. Check the Console Output.'
         }
     }
 }
